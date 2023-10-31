@@ -1,3 +1,9 @@
+import {SearchBar} from "./Components/SearchBar/SearchBar"
+
 export default function App(){
-  return "Hi"
+  return (
+    <div>
+      <SearchBar />
+    </div>
+  )
 }
