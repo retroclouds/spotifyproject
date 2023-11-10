@@ -1,9 +1,42 @@
-export default function Results () {
+import { useState } from "react"
+import Playlist from "../Playlist/playlist"
+
+export default function Results (props) {
+
+    const [playlist, setPlaylist] = useState(
+        [
+            /*{
+                title: "Title",
+                artists: ["Artists"],
+                album: "Album"
+            }*/
+    ]
+    )
+
+    function removeSong(songTitleToRemove){
+        setPlaylist(playlist.filter(
+            (song) => song.title !== songTitleToRemove
+          ))
+    }
+
+    const testData = 
+    [ { title: "hello", artists: ["hey"], album: "goodbye" } ] 
+
     return (
-        <div>
-            <h1>hello</h1>
-            <h2>hey</h2>
-            <h2></h2>
-        </div>
+        <>
+          {props.results.map((result, key) => (
+              <>
+                <h2>{result.title}: {result.artists.join(" ")} from {result.album}</h2>
+                <button onClick={() => 
+                    {
+                        setPlaylist([...playlist, {title: result.title, artists: result.artists, album: result.album}])
+                    }
+                }>
+                    +
+                </button>
+              </>
+          ))}
+          <Playlist playlist={playlist} removeSong={removeSong}/>
+        </>
     )
 }

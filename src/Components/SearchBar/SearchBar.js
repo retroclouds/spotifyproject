@@ -1,47 +1,26 @@
-import React, { useState } from "react"
-import Results from "../Results/results"
-
-
-const songs = [
-    {
-        title: "Touring",
-        artists: ["Slim", "Headie One"],
-        album: "Still Working"
-    }, 
-    {
-        title: "Stay Inside",
-        artists: ["Digga D"],
-        album: "Stay Inside"
-    },
-    {
-        title: "Toast Up",
-        artists: ["Skeamer"],
-        album: "Toast Up"
-    },
-
-    {
-        title: "NRF Freestyle",
-        artists: ["Clavish"],
-        album: "Rap Game Awful"
-    },
-
-    {
-        title: "Crease",
-        artists: ["Confamm Charlito", "AO", "Skripteh", "Jah1", "Smilez"],
-        album: "Crease"
-    }
-]
-
-
-
+import React, { useState } from "react";
+import Results from "../Results/results";
+import filterBooks from "./searchFunctions";
+import { songs } from "../../songData/songData";
 
 
 export function SearchBar() {
 
-    const [text, setText] = useState("")
+    const [text, setText] = useState([""])
+
+    const [searchResults, setSearchResults] = useState([
+        /*{
+            title: "Title",
+            artists: ["Artists",],
+            album: "Album"
+        }*/
+])
 
     function handleChange({target}){
         setText(target.value)
+        const songObjects = filterBooks(text, songs)
+        setSearchResults(songObjects)
+
     }
 
 
@@ -49,14 +28,10 @@ export function SearchBar() {
         <>
           <label htmlFor="songSearch">Search</label>
           <input name="songSearch" type="text" id="songSearch" value={text} onChange={handleChange}></input>
-          <h1>{text}</h1>
-          {songs.map((song, key) => (
-            <h2>{song.title}: {song.artists.join(" ")} from {song.album}</h2>
-          ))}
+          <h1>Results:</h1>
           <div>
-            <Results />
+            <Results results={searchResults}/>
           </div>
         </>
-        
     )
 }
