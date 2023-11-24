@@ -3,7 +3,6 @@ import Results from "../Results/results";
 import filterBooks from "./searchFunctions";
 import { songs } from "../../songData/songData";
 
-
 export function SearchBar() {
 
     const [text, setText] = useState([""])
@@ -19,8 +18,7 @@ export function SearchBar() {
     function handleChange({target}){
         setText(target.value)
         const songObjects = filterBooks(text, songs)
-        setSearchResults(songObjects)
-
+        setSearchResults(songObjects)        
     }
 
 
@@ -31,6 +29,7 @@ export function SearchBar() {
           <h1>Results:</h1>
           <div>
             <Results results={searchResults}/>
+            <h1></h1>
           </div>
         </>
     )

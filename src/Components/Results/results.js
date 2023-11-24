@@ -1,6 +1,11 @@
 import { useState } from "react"
 import Playlist from "../Playlist/playlist"
 
+const testData = [ { title: "hello", artists: ["hey"], album: "goodbye" } ] 
+const testSong = { title: "hello", artists: ["hey"], album: "goodbye" }
+
+export { testSong }
+
 export default function Results (props) {
 
     const [playlist, setPlaylist] = useState(
@@ -13,14 +18,19 @@ export default function Results (props) {
     ]
     )
 
+    const [playlistUris, setPlaylistUris] = useState([])
+
     function removeSong(songTitleToRemove){
         setPlaylist(playlist.filter(
             (song) => song.title !== songTitleToRemove
           ))
     }
 
-    const testData = 
-    [ { title: "hello", artists: ["hey"], album: "goodbye" } ] 
+    function removeUri(uriToRemove){
+        setPlaylistUris(playlistUris.filter(
+            (uri) => uri !== uriToRemove
+        ))
+    }
 
     return (
         <>
@@ -30,13 +40,14 @@ export default function Results (props) {
                 <button onClick={() => 
                     {
                         setPlaylist([...playlist, {title: result.title, artists: result.artists, album: result.album}])
+                        setPlaylistUris([...playlistUris, result.spotifyUri])
                     }
                 }>
                     +
                 </button>
               </>
           ))}
-          <Playlist playlist={playlist} removeSong={removeSong}/>
+          <Playlist playlist={playlist} removeSong={removeSong} uris={playlistUris} removeUri={removeUri}/>
         </>
     )
 }
