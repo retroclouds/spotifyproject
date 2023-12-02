@@ -36,10 +36,13 @@ export default function Results (props) {
         <>
           {props.results.map((result, key) => (
               <>
-                <h2>{result.title}: {result.artists.join(" ")} from {result.album}</h2>
+                <h2>{result.name}:{' by '}
+                {result.artists.map((artist) => {return artist.name + ' '})} 
+                from {result.album.album_type}
+                </h2>
                 <button onClick={() => 
                     {
-                        setPlaylist([...playlist, {title: result.title, artists: result.artists, album: result.album}])
+                        setPlaylist([...playlist, {title: result.name, artists: result.artists.map((artist) => {return artist.name}), album: result.album.album_type}])
                         setPlaylistUris([...playlistUris, result.spotifyUri])
                     }
                 }>

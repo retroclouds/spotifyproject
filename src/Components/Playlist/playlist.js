@@ -15,10 +15,12 @@ export default function Playlist (props) {
           <input value={playlistName} type="text" id="playlistName" onChange={handleChange}/>
           {props.playlist.map((song, key) => (
             <>
-              <h2>{song.title}: {song.artists.join(" ")} from {song.album}</h2>
+              <h2>{song.name}:{' by'} {song.artists.join(" ")} from {song.album}</h2>
               <button 
-              onClick={() => {props.removeSong(song.title); 
-                props.removeUri(song.spotifyUri)}
+              onClick={() => {
+                props.removeUri(song.spotifyUri);
+                props.removeSong(song.title); 
+                }
               }>
                 -
                 </button>

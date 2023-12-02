@@ -22,20 +22,20 @@ export default function App(){
     body: "grant_type=client_credentials&client_id=" + client_id + "&client_secret=" + client_secret
   }
 
-  async function getAccessToken() {
-    const response = await fetch(tokenEndpoint, params)
-    const jsonResponse = await response.json()
-    setAccessToken(jsonResponse.access_token)
-}
+    async function getAccessToken() {
+      const response = await fetch(tokenEndpoint, params)
+      const jsonResponse = await response.json()
+      setAccessToken(jsonResponse.access_token)
+  }
 
-getAccessToken();
+  getAccessToken();
     
-}, [])
+  }, [])
 
   return (
     <div>
       <h1></h1>
-      <SearchBar />
+      <SearchBar accessToken={accessToken} />
       <br></br>
       <CurrentSong />
     </div>
