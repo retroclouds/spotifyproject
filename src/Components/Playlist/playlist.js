@@ -15,7 +15,8 @@ export default function Playlist (props) {
           <input value={playlistName} type="text" id="playlistName" onChange={handleChange}/>
           {props.playlist.map((song, key) => (
             <>
-              <h2>{song.name}:{' by'} {song.artists.join(" ")} from {song.album}</h2>
+              <h2>{song.title}:{' by'} {song.artists.join(" ")} from {song.album}</h2>
+              <h3>{song.uri}</h3>
               <button 
               onClick={() => {
                 props.removeUri(song.spotifyUri);

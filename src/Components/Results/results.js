@@ -42,7 +42,7 @@ export default function Results (props) {
                 </h2>
                 <button onClick={() => 
                     {
-                        setPlaylist([...playlist, {title: result.name, artists: result.artists.map((artist) => {return artist.name}), album: result.album.album_type}])
+                        setPlaylist([...playlist, {title: result.name, artists: result.artists.map((artist) => {return artist.name}), album: result.album.album_type, uri: result.uri}])
                         setPlaylistUris([...playlistUris, result.spotifyUri])
                     }
                 }>

@@ -8,10 +8,30 @@ const client_id = "1e7fb62cc8914cbf963fe98599e371f1"
 const client_secret = "9cfa0c5d787f43059fa1e5ab235de187"
 const tokenEndpoint =  "https://accounts.spotify.com/api/token"
 
+const authEndpoint = "https://accounts.spotify.com/authorize"
+
+const responseType = "token"
+const redirectUri = "http://localhost:3000"
+const scope = "playlist-modify-public playlist-modify-private user-read-private user-read-email"
+
+const authUrl = `${authEndpoint}?client_id=${client_id}&redirect_uri=${redirectUri}&scope=${scope}
+                &response_type=${responseType}`
+
+
+
+
 export default function App(){
 
   const [accessToken, setAccessToken] = useState("")
 
+  useEffect(() => {
+    const hash = window.location.hash
+    if(hash) {
+      setAccessToken(hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1])
+    }
+  }, [])
+
+  /*
   useEffect(() => {
 
     const params = {
@@ -31,11 +51,13 @@ export default function App(){
   getAccessToken();
     
   }, [])
+  */
 
   return (
     <div>
+      <a href={authUrl}>Login</a>
       <h1></h1>
-      <SearchBar accessToken={accessToken} />
+      <SearchBar/>
       <br></br>
       <CurrentSong />
     </div>

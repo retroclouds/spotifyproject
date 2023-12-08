@@ -48,6 +48,23 @@ export function SearchBar(props) {
 
     }, [text])
 
+    const getUserEndpoint = "https://api.spotify.com/v1/me"
+    const getUserParams = {
+    method: "GET",
+    headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " + props.accessToken
+      }
+    }
+  
+    async function getUser(){
+      const response = await fetch(getUserEndpoint, getUserParams)
+      const jsonResponse = await response.json()
+      console.log(jsonResponse)
+    }
+  
+    getUser()
+
 
     return (
         <>
