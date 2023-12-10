@@ -17,12 +17,10 @@ const scope = "playlist-modify-public playlist-modify-private user-read-private 
 const authUrl = `${authEndpoint}?client_id=${client_id}&redirect_uri=${redirectUri}&scope=${scope}
                 &response_type=${responseType}`
 
-
-
-
 export default function App(){
 
   const [accessToken, setAccessToken] = useState("")
+  const [userId, setUserId] = useState("")
 
   useEffect(() => {
     const hash = window.location.hash
@@ -30,6 +28,24 @@ export default function App(){
       setAccessToken(hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1])
     }
   }, [])
+
+
+  const userEndpoint = "https://api.spotify.com/v1/me"
+  const userParams = {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+      "Authorization": "Bearer " + accessToken
+    }
+  }
+
+  async function getUserId() {
+    const response = await fetch(userEndpoint, userParams)
+    const jsonResponse = await response.json()
+    console.log(jsonResponse)
+    setUserId(jsonResponse.id)
+  }
+  getUserId()
 
   /*
   useEffect(() => {
@@ -57,7 +73,7 @@ export default function App(){
     <div>
       <a href={authUrl}>Login</a>
       <h1></h1>
-      <SearchBar/>
+      <SearchBar accessToken={accessToken} userId={userId}/>
       <br></br>
       <CurrentSong />
     </div>

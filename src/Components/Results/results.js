@@ -50,7 +50,9 @@ export default function Results (props) {
                 </button>
               </>
           ))}
-          <Playlist playlist={playlist} removeSong={removeSong} uris={playlistUris} removeUri={removeUri}/>
+          <h1></h1>
+          <Playlist playlist={playlist} removeSong={removeSong} uris={playlistUris} 
+          removeUri={removeUri} accessToken={props.accessToken} userId={props.userId}/>
         </>
     )
 }

@@ -62,9 +62,6 @@ export function SearchBar(props) {
       const jsonResponse = await response.json()
       console.log(jsonResponse)
     }
-  
-    getUser()
-
 
     return (
         <>
@@ -72,8 +69,8 @@ export function SearchBar(props) {
           <input name="songSearch" type="text" id="songSearch" value={text} onChange={handleChange}></input>
           <h1>Results:</h1>
           <div>
-            <Results results={searchResults}/>
-            <h1>{props.accessToken}</h1>
+            <Results results={searchResults} accessToken={props.accessToken} userId={props.userId}/>
+            <h1></h1>
           </div>
         </>
     )
