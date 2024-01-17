@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Results from "../Results/results";
+import Playlist from "../Playlist/playlist";
 import filterBooks from "./searchFunctions";
 import { songs } from "../../songData/songData";
+import styles from '../../style.module.css'
 
 export function SearchBar(props) {
 
-    const [text, setText] = useState([""])
-
+    const [text, setText] = useState("")
     const [searchResults, setSearchResults] = useState([
         /*{
             title: "Title",
@@ -14,38 +15,44 @@ export function SearchBar(props) {
             album: "Album"
         }*/
     ])
+    const [playlist, setPlaylist] = useState([])
 
     function handleChange({target}){
         setText(target.value)
     }
 
+    function removeSong(songTitleToRemove){
+        setPlaylist(playlist.filter(
+            (song) => song.title !== songTitleToRemove
+          ))
+    }
+
     useEffect(() => {
-        if(!text) {
-            return setSearchResults([])
-        }
+        if(text){
+            const searchEndpoint = `https://api.spotify.com/v1/search?q=${text}&type=track&limit=5`
 
-        const searchEndpoint = `https://api.spotify.com/v1/search?q=${text}&type=track&limit=10`
-
-        const searchParams = {
-            method: "GET",
-            headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + props.accessToken
+            const searchParams = {
+                method: "GET",
+                headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + props.accessToken
+                }
             }
-        }
-          
-        async function getTrack(){
-            const response = await fetch(searchEndpoint, searchParams)
-            const jsonResponse = await response.json()
-            console.log(jsonResponse.tracks.items)
-            setSearchResults(jsonResponse.tracks.items)
-
-        }
+              
+            async function getTrack(){
+                const response = await fetch(searchEndpoint, searchParams)
+                const jsonResponse = await response.json()
+                try {
+                    console.log(jsonResponse.tracks.items)
+                    setSearchResults(jsonResponse.tracks.items)
+                }
+                catch(error) {
+                    console.error(error.message)
+                }
     
-        getTrack();
-            //const songObjects = filterBooks(text, songs)
-            //setSearchResults(songObjects)        
-
+            }
+            getTrack();            
+        }   
     }, [text])
 
     const getUserEndpoint = "https://api.spotify.com/v1/me"
@@ -65,12 +72,13 @@ export function SearchBar(props) {
 
     return (
         <>
-          <label htmlFor="songSearch">Search</label>
-          <input name="songSearch" type="text" id="songSearch" value={text} onChange={handleChange}></input>
-          <h1>Results:</h1>
-          <div>
-            <Results results={searchResults} accessToken={props.accessToken} userId={props.userId}/>
-            <h1></h1>
+          <br></br>
+          <input className={styles.search} placeholder="Search" name="songSearch" type="text" 
+          id="songSearch" value={text} onChange={handleChange}></input>
+          <div className={styles.wrapper}>
+            <Results results={searchResults} playlist={playlist} setPlaylist={setPlaylist}/>
+            <Playlist playlist={playlist} removeSong={removeSong} accessToken={props.accessToken} 
+            userId={props.userId}/>
           </div>
         </>
     )

@@ -50,9 +50,14 @@ export default function Playlist (props) {
     }
 
     async function addSongs() {
-      const response = await fetch(addSongsEndpoint, addSongParams)
-      const jsonResponse = await response.json()
-      console.log(jsonResponse)
+      try{
+        const response = await fetch(addSongsEndpoint, addSongParams)
+        const jsonResponse = await response.json()
+        console.log(jsonResponse)
+      }
+      catch(error){
+        alert("There was an issue saving your playlist, Please press the save button again")
+      }
     }
     return (
 
@@ -66,10 +71,8 @@ export default function Playlist (props) {
           {props.playlist.map((song, key) => (
             <>
               <h2>{song.title}:{' by'} {song.artists.join(" ")} from {song.album}</h2>
-              <h3>{song.uri}</h3>
               <button 
               onClick={() => {
-                props.removeUri(song.spotifyUri);
                 props.removeSong(song.title); 
                 }
               }>
@@ -82,8 +85,17 @@ export default function Playlist (props) {
             console.log(props.playlist[i].uri)
           }}}>Click</button>*/}
           <br></br>
-          <h1></h1>
-          <button onClick={() => {createPlaylist(); addSongs();}}>Save</button>
+          <button onClick={() => {
+            try {
+              createPlaylist(); addSongs();
+            }
+            catch(error){
+              console.error(error.message)
+              window.alert("Network Error, Please try again")
+            }
+          }
+          }
+          >Save To Spotify</button>
         </>
     )
 }

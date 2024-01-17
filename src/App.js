@@ -1,8 +1,10 @@
 import {SearchBar} from "./Components/SearchBar/SearchBar"
-import CurrentSong from "./Components/CurrentSong/currentSong"
+import CurrentSong from "./Components/SpotifyPlayer/SpotifyPlayer"
 import { useState } from "react"
 import { testSong } from "./Components/Results/results"
 import { useEffect } from "react"
+import styles from "./style.module.css"
+import SpotifyPlayer from "./Components/SpotifyPlayer/SpotifyPlayer"
 
 const client_id = "1e7fb62cc8914cbf963fe98599e371f1"
 const client_secret = "9cfa0c5d787f43059fa1e5ab235de187"
@@ -23,6 +25,8 @@ export default function App(){
   const [userId, setUserId] = useState("")
 
   useEffect(() => {
+    document.body.style.backgroundColor = "rgb(42, 39, 39)"
+    document.body.style.font = "16px 'Roboto', sans-serif"
     const hash = window.location.hash
     if(hash) {
       setAccessToken(hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1])
@@ -61,21 +65,23 @@ export default function App(){
     async function getAccessToken() {
       const response = await fetch(tokenEndpoint, params)
       const jsonResponse = await response.json()
-      setAccessToken(jsonResponse.access_token)
+      setAccessToken2(jsonResponse.access_token)
   }
 
   getAccessToken();
     
   }, [])
   */
+  
 
   return (
-    <div>
-      <a href={authUrl}>Login</a>
-      <h1></h1>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Welcome To Jamming !</h1>
+      <h1>1st Access token: {accessToken}</h1>
       <SearchBar accessToken={accessToken} userId={userId}/>
       <br></br>
-      <CurrentSong />
+      <a className={styles.login} href={authUrl}>Login</a>
+      <SpotifyPlayer accessToken={accessToken}/>
     </div>
   )
 }
